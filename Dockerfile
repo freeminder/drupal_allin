@@ -15,7 +15,7 @@ RUN mkdir -p /var/run/btsync
 RUN mkdir -p /data
 RUN chown -R www-data:www-data /btsync/
 RUN chown -R www-data:www-data /var/run/btsync/
-EXPOSE 55555
+#EXPOSE 55555
 ADD start-btsync /usr/bin/start-btsync
 RUN chmod +x /usr/bin/start-btsync
 VOLUME ["/data"]
@@ -57,5 +57,5 @@ RUN rm -rf /var/www/ ; cd /var ; drush dl drupal ; mv /var/drupal*/ /var/www/
 RUN chmod a+w /var/www/sites/default ; mkdir /var/www/sites/default/files ; chown -R www-data:www-data /var/www/
 
 RUN chmod 755 /start.sh /etc/apache2/foreground.sh
-#EXPOSE 80
+EXPOSE 80
 CMD ["/bin/bash", "/start.sh"]
