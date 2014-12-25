@@ -57,5 +57,5 @@ RUN rm -rf /var/www/ ; cd /var ; drush dl drupal ; mv /var/drupal*/ /var/www/
 RUN chmod a+w /var/www/sites/default ; mkdir /var/www/sites/default/files ; chown -R www-data:www-data /var/www/
 
 RUN chmod 755 /start.sh /etc/apache2/foreground.sh
-EXPOSE 81
+EXPOSE 80
 CMD ["/bin/bash", "/start.sh"]
