@@ -47,7 +47,7 @@ ADD ./sed_mysql.sh /tmp/sed_mysql.sh
 #!!#RUN sed -i "s/^bind-address/#bind-address/" /etc/mysql/my.cnf
 
 RUN easy_install supervisor
-#EXPOSE 3306 4444 4567 4568
+EXPOSE 4444 4567 4568
 ADD ./start.sh /start.sh
 ADD ./foreground.sh /etc/apache2/foreground.sh
 ADD ./supervisord.conf /etc/supervisord.conf
