@@ -6,8 +6,13 @@
 FROM debian:wheezy
 MAINTAINER Dmitry Zhukov <dmitry.zhukov@gmail.com>
 
+#Install n2n vpn
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y n2n curl procps net-tools
+EXPOSE 16161
+CMD ["supernode", "-l", "16161"]
+CMD ["edge", "-d", "n2n0", "-c", "mynetwork", "-k", "3ncryptm3", "-a", "10.1.2.1", "-l", "127.0.0.1:16161"]
+
 # Install btsync
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y curl procps net-tools
 RUN curl -o /usr/bin/btsync.tar.gz http://download-lb.utorrent.com/endpoint/btsync/os/linux-x64/track/stable
 RUN cd /usr/bin && tar -xzvf btsync.tar.gz && rm btsync.tar.gz
 RUN mkdir -p /btsync/.sync
@@ -56,5 +61,5 @@ RUN rm -rf /var/www/ ; cd /var ; drush dl drupal ; mv /var/drupal*/ /var/www/
 RUN chmod a+w /var/www/sites/default ; mkdir /var/www/sites/default/files ; chown -R www-data:www-data /var/www/
 
 RUN chmod 755 /start.sh /etc/apache2/foreground.sh
-EXPOSE 4567 80
+EXPOSE 80
 CMD ["/bin/bash", "/start.sh"]
