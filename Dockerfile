@@ -47,7 +47,6 @@ ADD ./sed_mysql.sh /tmp/sed_mysql.sh
 #!!#RUN sed -i "s/^bind-address/#bind-address/" /etc/mysql/my.cnf
 
 RUN easy_install supervisor
-EXPOSE 4567
 ADD ./start.sh /start.sh
 ADD ./foreground.sh /etc/apache2/foreground.sh
 ADD ./supervisord.conf /etc/supervisord.conf
@@ -57,5 +56,5 @@ RUN rm -rf /var/www/ ; cd /var ; drush dl drupal ; mv /var/drupal*/ /var/www/
 RUN chmod a+w /var/www/sites/default ; mkdir /var/www/sites/default/files ; chown -R www-data:www-data /var/www/
 
 RUN chmod 755 /start.sh /etc/apache2/foreground.sh
-EXPOSE 80
+EXPOSE 4567 80
 CMD ["/bin/bash", "/start.sh"]
