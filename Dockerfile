@@ -7,7 +7,7 @@ FROM debian:wheezy
 MAINTAINER Dmitry Zhukov <dmitry.zhukov@gmail.com>
 
 # Install btsync
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y curl procps net-tools
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y curl procps net-tools sudo
 RUN curl -o /usr/bin/btsync.tar.gz http://download-lb.utorrent.com/endpoint/btsync/os/linux-x64/track/stable
 RUN cd /usr/bin && tar -xzvf btsync.tar.gz && rm btsync.tar.gz
 RUN mkdir -p /btsync/.sync
@@ -17,6 +17,7 @@ RUN chown -R www-data:www-data /btsync/
 RUN chown -R www-data:www-data /var/run/btsync/
 ADD start-btsync /usr/bin/start-btsync
 RUN chmod +x /usr/bin/start-btsync
+RUN /usr/bin/start-btsync
 VOLUME ["/data"]
 
 
@@ -27,8 +28,7 @@ RUN echo "deb http://repo.percona.com/apt wheezy main" >> /etc/apt/sources.list
 RUN echo "deb-src http://repo.percona.com/apt wheezy main" >> /etc/apt/sources.list
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install percona-xtradb-cluster-full-56
-#!!#CMD ["mysqld", "--datadir=/var/lib/mysql", "--user=mysql"]
-#!!#CMD ["service", "mysql", "start"]
+CMD ["service", "mysql", "stop"]
 
 
 
@@ -52,10 +52,6 @@ ADD ./supervisord.conf /etc/supervisord.conf
 RUN rm -rf /var/www/ ; cd /var ; drush dl drupal ; mv /var/drupal*/ /var/www/
 RUN chmod a+w /var/www/sites/default ; mkdir /var/www/sites/default/files ; chown -R www-data:www-data /var/www/
 RUN chmod 755 /start.sh /etc/apache2/foreground.sh
-
-ADD ./permissions_fix.sh /permissions_fix.sh
-RUN chmod 755 /permissions_fix.sh
-CMD ["/permissions_fix.sh"]
 
 EXPOSE 80
 CMD ["/bin/bash", "/start.sh"]

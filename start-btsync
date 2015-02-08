@@ -36,4 +36,4 @@ echo "{
 }" > /btsync/btsync.conf
 
 # btsync --config /btsync/btsync.conf --webui.listen 8880 --nodaemon
-btsync --config /btsync/btsync.conf --nodaemon
+# btsync --config /btsync/btsync.conf --nodaemon
